@@ -1,5 +1,5 @@
 
-
+/****************
 
 Exercício Desafio (2 pontos)
 1 - Uma empresa precisa cadastrar alguns dados de seus funcionarios e fazer alguns calculos.
@@ -35,9 +35,44 @@ Caso seja, imprima um texto com essa informacao para o funcionario do RH.
       Level 7 - Salario ate 15001 - 30000 - Deretor de TI 
       Level 8 - Salario ate 30001 - 50000 - Diretor de TI Sênio
       Level 9 - Salario ate 50001- 100000 - Presidente 
-   
- 
+    
 ************************************************************************************/
 Porque o cin nao guarda vetor ?
+       
+       #include <iostream>
+       using namespace std;
+
+int main()
+{
+  string nome;
+  string cpf ;
+  string nacionalidade;
+  float identidade;
+  string pais;
+  string estado;
+  string cidade;
+  string rua;
+  int numero;
+  float salario;
+  
+cout <<"Digite o nome do funcionário?"<<"\n";
+        getline(cin,nome);
+cout <<"Digite o CPF de "<< nome<<"?"<<"\n";
+        getline(cin,cpf);
+cout <<"Digite a identidade de "<< nome<<"?"<<"\n";
+        cin >> identidade;
+cout <<"Digite a nacionalidade de "<< nome<<"?"<<"\n";
+      cin>>nacionalidade;    
+cout <<"Digite o estado de "<< nome<<"?"<<"\n";
+        cin >> estado;  
+cout <<"Digite o cidade de "<< nome<<"?"<<"\n";
+       cin >> cidade;       
+cout <<"Digite é o endereço de "<< nome<<"?"<<"\n";
+      cin >> rua;   
+cout <<"Digite o número do endereço "<< nome<<"?"<<"\n";
+      cin >>numero; 
+cout <<"Digite o número do salario "<< nome<<"?"<<"\n";
+      cin >> salario; 
+} 
 
 
