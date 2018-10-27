@@ -1,0 +1,77 @@
+install.packages("titanic")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("lmtest")
+install.packages("descr")
+install.packages("texreg")
+install.packages("pRoc")
+
+
+library(titanic)
+library(dplyr)
+library(ggplot2)
+library(descr)
+library(texreg)
+library(pRoc)
+library(lmtest)
+
+bd = titanic_train
+bd
+
+# Regressão com Idade , Idade e Sexo E Idade, sexto e classe
+
+reg1 = glm (Survived ~ Age, data = bd,family = binomial())
+reg1
+reg2 = glm(Survived ~ Age + Sex, data = bd, family = binomial())
+reg2
+reg3 = glm(Survived ~ Age + Sex +factor(Pclass), data = bd, family = binomial())
+reg3# Eu coloco o factor pq tenho 3 classes
+screenreg(list(reg1,reg2,reg3)) # Coloca as três regressões juntas
+
+# fazendo o teste de likelihood # principio da verossimilhacia - se possui diferença estastitica, se tem um é melhor
+lrtest(reg2,reg1)
+# Eu analiso pelo P valor (estrelas),
+lrtest(reg3,reg2)
+lrtest(reg2,reg3)
+# como esse teste apresentou ser significante, o modelo com mais variaveis é melhor
+#a ordem dos modelos não interfere na análise
+# os testes indicaram que o reg3 é o melhor modelo dentre os estimados
+# vamos verificar os resultados
+summary(reg3) # logit - escala logaritma
+
+# transformar os logits em chances relativas - percentuais
+coeficientes = coef(reg3)[-1]
+coeficientes
+(exp(coeficientes)-1)*100 #chances
+# quando eu aumento 1 ano da idade há uma diminuição de -3,63% nas chances
+# homens tem 91,68% a menos de chances de sobrevivencia do que as mulheres
+# quem esta na 2 classe tem 73,01% menos chance de sobrevivencia em relação a 1º Classe
+# -92 -- 73= 19% - ou seja a 3º classe tem 19% menos chance de sobrevivencia que a 2 classe
+
+# avaliar o desempenho do modelo
+# dado de teste
+titanic_test
+bdteste = titanic_test %>% as_tibble()
+dim(bd)
+dim(bdteste)
+
+pred = predict(reg3, bdteste,
+               type = "response")
+pred
+yhat =ifelse(pred>.5,1,0)#se a probabilidade for maior que 50% coloca 1 se nao coloca 0
+yhat
+
+# Montar a confusion matrix
+# tabela  realidade vs predito
+
+
+verdade = titanic_gender_model$Survived
+t= table(verdade,yhat)
+t
+
+# Valor verdadeiro positivo - 188 - quando modelo prediz e realmente aconteceu
+# valor verdadeiro negativo - 117 - quando modelo prediz q nao aconteceu e de fato nao aconteceu
+
+res = roc(verdade,yhat)
+auc (res)
+plot.roc(res,print.auc =T)
