@@ -1,0 +1,53 @@
+
+#include <iostream>
+#include <cstdlib>
+
+
+class Node
+{
+    public:
+        Node* proximo; // ponteiro
+        int valor;
+};
+
+using namespace std;
+
+int main()
+{
+    Node* no1 = new Node();
+    no1->valor = 10;
+
+    Node* no2 = new Node();
+    no2->valor = 15;
+    
+    Node* no3 = new Node();
+    no3->valor = 20;
+    
+    cout << no1->valor << endl; // imprimiu o atributo valor que em no1
+    cout << no2->valor << endl;
+    cout << no3->valor << endl;
+    cout << endl;
+    
+    // lista circular - loop pq no1 vai para no2 e no2 passa para no3 e no3 vai para no1 
+    no1->proximo = no2; // informou que proximo atributo do n1 é o n2
+    cout << no1->proximo->valor << endl;
+    no2->proximo = no3;
+    cout << no2->proximo->valor << endl;
+    no3->proximo = no1;
+    cout << no3->proximo->valor << endl;
+
+    int i = 0;
+
+    Node* aux = no1;
+
+    while(aux)
+   {
+	cout << aux->valor << endl;
+        aux = aux->proximo;
+        i++;
+        if(i == 100)
+		break;
+   }
+
+    return 0;
+}
