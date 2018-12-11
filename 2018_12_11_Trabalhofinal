@@ -1,0 +1,263 @@
+Exercício 01: Pesquise e documente o que é um template class.
+
+Antes de apresentar o conceito de template class é necessário entender o conceito de classe:
+
+Classe:
+Uma classe é um tipo definido pelo usuário que contém o molde, a especificação para os objetos, assim como o 
+tipo inteiro contém o molde para as variáveis declaradas como inteiros. 
+A classe envolve, associa, funções e dados, controlando o acesso a estes, defini-la implica em especificar os seus 
+atributos (dados) e suas funções membro (código).
+
+
+Template Class - Polimorfismo Paramétrico:
+Uma template class ou polimorfismo paramétrico permite definir classes e funções generalizadas. Podemos definir classes 
+em que existam propriedades que podem assumir um tipo qualquer de dados ou objetos. Estas classes têm um comportamento especial e 
+o código delas só é gerado quando o compilador encontra a sua utilização. Este recurso é bastante útil para evitar redundância 
+de código, portanto se trata de um meio de reuso deste. É importante para criar famílias de classes ou funções relacionadas.
+
+template <class T>
+class mypair {
+    T values [2];
+  public:
+    mypair (T first, T second)
+    {
+      values[0]=first; values[1]=second;
+    }
+};
+ 
+/*
+ 
+A classe que acabamos de definir serve para armazenar dois elementos de qualquer tipo válido. Por exemplo, 
+se quiséssemos declarar um objeto dessa classe para armazenar dois valores inteiros do tipo int com os 
+valores 115 e 36, escreveríamos: 
+ 
+ */
+
+mypair<int> myobject (115, 36);  
+
+/*
+ 
+essa mesma classe também seria usada para criar um objeto para armazenar qualquer outro tipo: 
+ 
+*/
+
+mypair<double> myfloats (3.0, 2.18);  
+
+ /*
+ 
+A única função de membro no modelo de classe anterior foi definida inline dentro da própria declaração 
+de classe. Caso definamos um membro de função fora da declaração do modelo de classe, devemos sempre 
+preceder essa definição com o prefixo template <...> : 
+ 
+ */
+
+// class templates
+#include <iostream>
+using namespace std;
+
+template <class T>
+class mypair {
+    T a, b;
+  public:
+    mypair (T first, T second)
+      {a=first; b=second;}
+    T getmax ();
+};
+
+template <class T>
+T mypair<T>::getmax ()
+{
+  T retval;
+  retval = a>b? a : b;
+  return retval;
+}
+
+int main () {
+  mypair <int> myobject (100, 75);
+  cout << myobject.getmax();
+  return 0;
+}
+
+// Observe a sintaxe da definição da função de membro getmax:
+
+template <class T>
+T mypair<T>::getmax ()
+
+
+
+
+
+
+
+
+
+
+
+Exercício 02: Explique como ela é utilizada no código de listas lineares existentes
+
+
+ 
+
+
+
+
+
+Exercício 3 : ordene 1.000 valores inteiros usando 03 (três) métodos diferentes e compare os
+tempos de execução
+
+Ordenação por Inserção
+using namespace std;
+	#include <iostream>
+	
+	// Imprime o vetor
+	void imprime(int vetor[], int n) 
+	{ 
+	    int i; 
+	    for (i=0; i < n; i++) 
+	    	cout << vetor[i] << " "; 
+	    cout << "\n"; 
+	} 
+	
+	void ordenacaoPorInsercao(int vetor[], int n) 
+	{ 
+	    int i, chave, j; 
+	    for (i = 1; i < n; i++) 
+	    { 
+	    	chave = vetor[i]; 
+	    	j = i-1; 
+	    
+	    	/* Move os elementos do vetor[0 ... i-1] que são
+	    	maiores do que a chave para uma posição a frente*/
+	    	while (j >= 0 && vetor[j] > chave) 
+	    	{ 
+	    		vetor[j+1] = vetor[j]; 
+	    		j = j-1; 
+	    	} 
+	    	vetor[j+1] = chave; 
+	    	imprime(vetor, n);
+	    } 
+	} 
+	
+
+	int main() 
+	{ 
+	    
+	    int n = 100;
+	    int vetor[n]; 
+	    
+	    for (int i = 0; i < n; i++)
+	        vetor [i] = rand()%100;
+	
+
+		int i = sizeof(vetor)/sizeof(vetor[0]); 
+	    cout << "Vetor Inicial:" << endl;
+	    imprime(vetor, n);
+		ordenacaoPorInsercao(vetor, n); 
+		imprime(vetor, n); 
+	
+
+		return 0; 
+	} 
+
+
+ 
+Ordenação por Seleção
+
+#include <iostream>
+	using namespace std;
+	void troca(int *xp, int *yp)
+	{
+	int temp = *xp;
+	*xp = *yp;
+	
+
+	*yp = temp;
+	}
+	//Imprime o vetor
+	void imprime(int vetor[], int tamanho)
+	{
+	int i;
+	for (i=0; i < tamanho; i++)
+	cout << vetor[i] << " ";
+	cout << "\n";
+	}
+	void ordenacaoPorSelecao(int vetor[], int n)
+	{
+	int i, j, min_idx;
+	//Loop para variar o limite do vetor.
+	for (i = 0; i < n-1; i++)
+	{
+	// Encontrar o menor elemento na parte não ordenada
+	min_idx = i;
+	for (j = i+1; j < n; j++)
+	if (vetor[j] < vetor[min_idx])
+	min_idx = j;
+	// Trocar o menor elemento com o primeiro da parte não ordenada
+	troca(&vetor[min_idx], &vetor[i]);
+	imprime(vetor, n);
+	}
+	}
+	int main()
+	{
+	int n = 1000;
+	int vetor[n];
+	for (int i=0;i<n;i++)
+	
+
+	vetor[i] = rand() % 100 + 1;
+	cout << "Vetor Inicial: " << endl;
+	imprime(vetor, n);
+	cout << endl;
+	ordenacaoPorSelecao(vetor, n);
+	cout << "Vetor Ordenado: \n";
+	imprime(vetor, n);
+	return 0;
+	}
+
+
+ 
+Ordenação por Bolha
+
+#include <iostream>
+	#include <cstdlib>
+	using namespace std;
+	void mostraVetor(int vet[], int tamanho){
+	for (int i=0;i<tamanho;i++)
+	cout << vet[i] << " ";
+	
+	}
+	void bolha(int vetor[], int tamanho) {
+	int temp = 0;
+	bool trocou = false;
+	for (int i=tamanho-1;i>=1;i--){
+	for (int j=1; j<tamanho; j++) {
+	if (vetor[j]<vetor[j-1]){
+	temp = vetor[j];
+	vetor[j]=vetor[j-1];
+	vetor[j-1]=temp;
+	trocou = true;
+	}
+	}
+	if (!trocou)
+	break;
+	mostraVetor(vetor, tamanho);
+	cout << endl;
+	}
+	}
+	int main() {
+	int n = 1000;
+	int vet[n];
+	// inicializa o gerador de números randômicos para preenchermos o vetor com números aleatórios
+	srand(time(NULL));
+	for (int i=0;i<n;i++)
+	vet[i] = rand() % 100 + 1;
+	cout << "O vetor foi preenchido aleatoriamente assim: " <<endl;
+	mostraVetor(vet, n);
+	cout << endl;
+	cout << endl;
+	bolha(vet,n);
+	cout << endl << endl << "Depois de ordenado: ";
+	mostraVetor(vet, n);
+	return 0;
+	}
+
